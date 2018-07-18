@@ -2,13 +2,14 @@ var readline = require('readline');
 
 // Module démo à supprimer
 var moduleDemo = require('./module-demo');
+var moduleSondage = require('./module-sondage');
 
 // pour faciliter l'écriture des logs et la répétition des "console.log"
 var lg = console.log;
 
 // liste des modules
 // si vous créer un nouveau module, n'oubliez pas de mettre à jour cette liste
-var listeModules = [moduleDemo];
+var listeModules = [moduleDemo, moduleSondage];
 
 lg('**** EvalMe - Console Administration ****');
 
