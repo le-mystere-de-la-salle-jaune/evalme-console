@@ -22,19 +22,41 @@ var demarrer = function(rl) {
 
         if(numeroChoix == 1) {
             lg(">>>> Vous avez choisi Lister");
-        } else if (numeroChoix == 2) {
-            lg(">>>> Vous avez choisi Sauvegarder");
-        }
-
-        // liste les stagiaires
+            // liste les stagiaires
 service.lister(function(uneListe) {
     uneListe.forEach(function(element) {
         console.log('Nom : ' + element.nom + ', Prenom : ' + element.prenom + ', Email : ' + element.email + ', Photo : ' + element.photo_url);
+        rl.close();
     });
 });
+        } else if (numeroChoix == 2) {
+            lg(">>>> Vous avez choisi Créer");
+            // création d'un stagiaire
+var newStagiaire = {};
+
+rl.question("Nom : ", function(newNom) {
+    newStagiaire.nom = newNom;
+    rl.question("Prénom : ", function(newPrenom) {
+        newStagiaire.prenom = newPrenom;
+        rl.question("Email : ", function(newEmail) {
+            newStagiaire.email = newEmail;
+            rl.question("Photo : ", function(newPhoto) {
+                newStagiaire.photo_url = newEmail;
+
+                service.creer(newStagiaire, function(body) {
+                    console.log("Un nouveau stagiaire a été créé : " + newStagiaire.nom + " avec l'id " + body.stagiaire_id);
         // permet d'arrêter l'application
         // à n'invoquer que si l'on ne servira plus de la saisie utilisateur
         rl.close();
+
+                });
+
+            });
+        });
+    });
+});
+        }
+  
     });
 };
 
