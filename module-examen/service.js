@@ -1,12 +1,10 @@
 // importation de la librairie request
 // recherche par défaut dans le répertoire node_modules
-var request = require('request')
+const request = require('request')
 
-exports.lister = function (callback) {
+exports.lister = callback => {
 
-    var uneListe = [{ nom : 'Hugues'}];
-
-    request('https://examen-web-admin.herokuapp.com/api/examens', { json: true }, function(err, res, body) {
+    request('https://examen-web-admin.herokuapp.com/api/examens', { json: true }, (err, res, body) => {
         if (err) { 
             return console.log('Erreur', err); 
         }
@@ -20,7 +18,7 @@ exports.lister = function (callback) {
     });
 };
 
-exports.creer = function (newJson, callback) {
+exports.creer = (newJson, callback) => {
 
     request(
         { method: 'POST'
@@ -28,7 +26,7 @@ exports.creer = function (newJson, callback) {
         , body: newJson
         ,json: true
         }
-      , function (error, response, body) {
+      , (error, response, body) => {
           if(response.statusCode == 200){
             callback(200,"New examen corectly inserted")
           } else {
@@ -38,7 +36,7 @@ exports.creer = function (newJson, callback) {
       )
 };
 
-exports.update = function (newJson, callback) {
+exports.update = (newJson, callback) => {
 
     request(
         { method: 'PUT'
@@ -46,7 +44,7 @@ exports.update = function (newJson, callback) {
         , body: newJson
         ,json: true
         }
-      , function (error, response, body) {
+      , (error, response, body) => {
           if(response.statusCode == 200){
             callback(200,"New examen corectly inserted")
           } else {
@@ -56,14 +54,14 @@ exports.update = function (newJson, callback) {
       )
 };
 
-exports.supprimer = function (idExamen, callback) {
+exports.supprimer = (idExamen, callback) => {
 
     request(
         { method: 'DELETE'
         , uri: 'https://examen-web-admin.herokuapp.com/api/examens/'+idExamen
         ,json: true
         }
-      , function (error, response, body) {
+      , (error, response, body) => {
           if(response.statusCode == 200){
             callback(200,"Examen corectly deleted")
           } else {

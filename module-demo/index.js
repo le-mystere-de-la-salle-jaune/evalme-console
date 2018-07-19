@@ -1,7 +1,7 @@
-var lg = console.log;
+const lg = console.log;
 
 // fonction démarrer exprimant la logique de votre entité
-var demarrer = function(rl) {
+const demarrer = function(rl) {
 
     // exemple d'affichage de menu
     lg("*** Entité Personne ***");
@@ -34,5 +34,5 @@ module.exports = {
     titre : 'Personne',
 
     // fonction invoquée lorsque ce module est choisi
-    demarrer : demarrer
+    demarrer
 }

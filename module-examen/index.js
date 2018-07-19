@@ -1,12 +1,12 @@
-var lg = console.log;
+const lg = console.log;
 
-var service = require('../module-examen/service')
+const service = require('../module-examen/service')
 
-var optionsTab = [lister, creer, update, supprimer]
-var saveOrUpdate = [service.creer, service.update]
+const optionsTab = [lister, creer, update, supprimer]
+const saveOrUpdate = [service.creer, service.update]
 
 // fonction démarrer exprimant la logique de votre entité
-var demarrer = function (rl) {
+const demarrer = rl => {
 
     proposerChoix(rl)
 
@@ -16,7 +16,7 @@ function proposerChoix(rl) {
     afficherMenu()
 
     // récupération du choix
-    rl.question("Votre choix : ", function (numeroChoix) {
+    rl.question("Votre choix : ", numeroChoix => {
 
         if (numeroChoix > 0 && numeroChoix < 5) {
             optionsTab[numeroChoix - 1](rl)
@@ -34,7 +34,7 @@ function proposerChoixRec(rl) {
     afficherMenu()
 
     // récupération du choix
-    rl.question("Votre choix : ", function (numeroChoix) {
+    rl.question("Votre choix : ", numeroChoix => {
 
         if (numeroChoix > 0 && numeroChoix < 4) {
             optionsTab[numeroChoix - 1](rl)
@@ -46,7 +46,7 @@ function proposerChoixRec(rl) {
 }
 
 function lister(rl) {
-    service.lister(function (uneListe) {
+    service.lister(uneListe =>{
         uneListe.forEach(element => {
             printExam(element)
         });
@@ -59,20 +59,19 @@ function creer(rl) {
 
     lg("*** Création d'un nouvel examen ***");
     // récupération du choix
-    var emptyJson = {}
+    let emptyJson = {}
 
     saveExamInfos(rl, 0, emptyJson)
 }
 
 function update(rl) {
 
-    var newJson = {}
+    let newJson = {}
 
     lg("*** Mise à jour d'un examen ***");
     // récupération du choix
-    var newJson = {}
 
-    rl.question("Id de l'éxamen à metre à jour : ", function(numeroChoix){
+    rl.question("Id de l'éxamen à metre à jour : ", numeroChoix =>{
         newJson.id = numeroChoix
         saveExamInfos(rl, 1, newJson)
     })
@@ -80,13 +79,13 @@ function update(rl) {
 
 function supprimer(rl) {
     lg("*** Suppression d'un éxamen ***")
-    service.lister(function (uneListe) {
+    service.lister(uneListe => {
         uneListe.forEach(element => {
             printExam(element)
         })
 
-        rl.question("Id de l'éxamen à supprimer : ", function (numeroChoix) {
-            service.supprimer(numeroChoix, function (code, message) {
+        rl.question("Id de l'éxamen à supprimer : ", numeroChoix => {
+            service.supprimer(numeroChoix, (code, message => {
                 if (code == 200) {
                     lg(message)
                 } else {
@@ -103,39 +102,44 @@ function supprimer(rl) {
 }
 
 function printExam(exam) {
-    lg("{"
-        , "\n\tid :", exam.id
-        , "\n\ttitre :", exam.titre
-        , "\n\tclasse : {"
-        , "\n\t\tid :", exam.classe.id
-        , "\n\t\tnom :", exam.classe.nom
-        , "},"
-        , "\n\tquizz : {"
-        , "\n\t\tid :", exam.quizz.id
-        , "\n\t\ttitre :", exam.quizz.titre
-        , "\n\t\tnb_questions :", exam.quizz.nb_questions
-        , "\n\t}\n}")
+
+    lg(`
+    {
+        id : ${exam.id},
+        titre : ${exam.titre},
+        classe : {
+            id : ${exam.classe.id},
+            nom : ${exam.classe.nom}
+        },
+        quizz : {
+            id : ${exam.quizz.id},
+            titre : ${exam.quizz.titre},
+            nb_questions : ${exam.quizz.nb_questions}
+        }
+    }`)
 }
 
 function afficherMenu() {
-    lg("*** Entité Examen ***");
-    lg("1.  Lister");
-    lg("2.  Sauvegarder");
-    lg("3.  Editer");
-    lg("4.  Supprimer");
-    lg("99. Quitter")
+
+    lg(`
+    *** Entité Examen ***
+    1.  Lister
+    2.  Sauvegarder
+    3.  Editer
+    4.  Supprimer
+    99. Quitter`)
 }
 
 function saveExamInfos(rl, service, newJson) {
-    rl.question("Titre de l'examen : ", function (numeroChoix) {
+    rl.question("Titre de l'examen : ", numeroChoix => {
         newJson.titre = numeroChoix
-        rl.question("Id du quizz : ", function (numeroChoix) {
+        rl.question("Id du quizz : ", numeroChoix => {
             newJson.quizz_id = numeroChoix
-            rl.question("Id de la classe : ", function (numeroChoix) {
+            rl.question("Id de la classe : ", numeroChoix => {
                 newJson.classe_id = numeroChoix
 
                 lg("Transmiting request, please wait ...")
-                saveOrUpdate[service](newJson, function (code, message) {
+                saveOrUpdate[service](newJson,  (code, message) => {
                     if (code == 200) {
                         lg(message)
                     } else {
@@ -158,5 +162,5 @@ module.exports = {
     titre: 'Examen',
 
     // fonction invoquée lorsque ce module est choisi
-    demarrer: demarrer
+    demarrer
 }
