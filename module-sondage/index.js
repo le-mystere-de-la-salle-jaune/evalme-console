@@ -15,19 +15,19 @@ var demarrer = function (rl, sortir) {
                     lg("Titre :", element.titre, " | Classe :", element.classe.nom, " | Nombre d'option :", element.nb_options)
                 );
             });
+            rl.close();
         } else if (numeroChoix == 2) {
             rl.question("selectionner un ID :", function(id){
-                service.listerById(function(sondage) {
+                service.listerById(id, function(sondage) {
                     lg("Titre :",sondage.titre, "| Classe :", sondage.classe.nom);
                     lg("Options :");
                     sondage.options.forEach( opt => 
                         lg("- Titre :", opt.libelle, "| description :", opt.description)
                     );
                 });
+                rl.close();
             });
         }
-
-        rl.close();
     });
 };
 

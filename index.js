@@ -33,6 +33,3 @@ rl.question('Choisir une entité :', function(numero) {
     // => chaque module doit exposer une méthode qui demarrer(rl)
     listeModules[numero-1].demarrer(rl);
 });
-
-
-

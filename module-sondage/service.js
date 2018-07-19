@@ -13,17 +13,18 @@ exports.lister = function (callback) {
     });
 };
 
-exports.listerById = function (callback) {
+exports.listerById = function (id, callback) {
 
     var request = require('request')
 
     // Envoie de la requête http
-    request('https://evalme-noel.herokuapp.com/api/sondages/lister/1', { json: true }, function (err, res, body) {
+    request('https://evalme-noel.herokuapp.com/api/sondages/lister/'+id, { json: true }, function (err, res, body) {
         if (err) { return console.log('Erreur', err); }
 
         var sondageById = body;
 
         // transmission de la réponse grâce à la technique du callback
         callback(sondageById);
+
     });
 };
