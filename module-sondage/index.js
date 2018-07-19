@@ -11,12 +11,20 @@ var demarrer = function (rl, sortir) {
     rl.question("votre choix:", function (numeroChoix) {
         if (numeroChoix == 1) {
             service.lister(function (sondages) {
-                sondages.forEach(function (element) {
-                    lg("Titre :", element.titre, " | Classe :", element.classe.nom, " | Nombre d'option :", element.nb_options);
-                });
+                sondages.forEach( element =>
+                    lg("Titre :", element.titre, " | Classe :", element.classe.nom, " | Nombre d'option :", element.nb_options)
+                );
             });
         } else if (numeroChoix == 2) {
-           
+            rl.question("selectionner un ID :", function(id){
+                service.listerById(function(sondage) {
+                    lg("Titre :",sondage.titre, "| Classe :", sondage.classe.nom);
+                    lg("Options :");
+                    sondage.options.forEach( opt => 
+                        lg("- Titre :", opt.libelle, "| description :", opt.description)
+                    );
+                });
+            });
         }
 
         rl.close();
