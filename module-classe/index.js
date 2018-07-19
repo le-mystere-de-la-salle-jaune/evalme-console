@@ -8,7 +8,7 @@ var demarrer = function(rl) {
     // exemple d'affichage de menu
     lg("*** Entité "+TITRE+" ***");
     lg("1. Lister les classes");
-    lg("2. Sauvegarder");
+    lg("2. Créer une nouvelle classe");
 
 
     // récupération du choix
@@ -17,7 +17,7 @@ var demarrer = function(rl) {
         // une fois la saisie effectuée
 
         if(numeroChoix == 1) {
-            lg(">>>> Vous avez choisi Lister");
+            lg(">>>> Vous avez choisi de lister");
             lg("ID classe || Nom classe")
             lg("-----------------------")
             service.lister(function(uneListe) {
@@ -26,7 +26,11 @@ var demarrer = function(rl) {
                 });
             });
         } else if (numeroChoix == 2) {
-            lg(">>>> Vous avez choisi Sauvegarder");
+            lg(">>>> Vous avez choisi de créer une nouvelle classe");
+            rl.question("Le nom de votre classe : ", function(nomClasse) {
+                service.creer(sonNom)
+            }
+        )
         }
 
         // permet d'arrêter l'application
