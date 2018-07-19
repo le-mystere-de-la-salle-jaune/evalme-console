@@ -3,7 +3,7 @@ var lg = console.log;
 var service = require('../module-examen/service')
 
 var optionsTab = [lister, creer, update, supprimer]
-var saveOrUpdate = [service.creer,service.update]
+var saveOrUpdate = [service.creer, service.update]
 
 // fonction démarrer exprimant la logique de votre entité
 var demarrer = function (rl) {
@@ -59,16 +59,23 @@ function creer(rl) {
 
     lg("*** Création d'un nouvel examen ***");
     // récupération du choix
-    saveExamInfos(rl, 0)
+    var emptyJson = {}
+
+    saveExamInfos(rl, 0, emptyJson)
 }
 
 function update(rl) {
 
     var newJson = {}
 
-    lg("*** Création d'un nouvel examen ***");
+    lg("*** Mise à jour d'un examen ***");
     // récupération du choix
-    saveExamInfos(rl, 0)
+    var newJson = {}
+
+    rl.question("Id de l'éxamen à metre à jour : ", function(numeroChoix){
+        newJson.id = numeroChoix
+        saveExamInfos(rl, 1, newJson)
+    })
 }
 
 function supprimer(rl) {
@@ -119,9 +126,7 @@ function afficherMenu() {
     lg("99. Quitter")
 }
 
-function saveExamInfos(rl, service){
-    var newJson = {}
-
+function saveExamInfos(rl, service, newJson) {
     rl.question("Titre de l'examen : ", function (numeroChoix) {
         newJson.titre = numeroChoix
         rl.question("Id du quizz : ", function (numeroChoix) {

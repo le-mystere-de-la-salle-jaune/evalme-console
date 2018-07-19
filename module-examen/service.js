@@ -41,8 +41,8 @@ exports.creer = function (newJson, callback) {
 exports.update = function (newJson, callback) {
 
     request(
-        { method: 'POST'
-        , uri: 'https://examen-web-admin.herokuapp.com/api/examens'
+        { method: 'PUT'
+        , uri: 'https://examen-web-admin.herokuapp.com/api/examens/'+newJson.id
         , body: newJson
         ,json: true
         }
