@@ -1,32 +1,89 @@
-var TITRE = 'Duel';
-var service = require('../module-duel/service')
+const TITRE = 'Duel';
+const Service = require('../module-duel/service')
+service = new Service()
+const lg = console.log;
+// TODO faire une map options {libelle, fonction}
 
-// pour faciliter l'écriture des logs et la répétition des "console.log"
-var lg = console.log;
+const demarrer = rl => {
+    proposerChoix(rl)
+}
 
-var demarrer = function (rl, sortir) {
-    lg('*** ' + TITRE + ' ***');
-    lg('1. Lister');
+function afficherMenu() {
+    lg(`
+    *** ${TITRE} ***
+    1. Lister les duels
+    2. Créer un duel
+    3. Editer un duel
+    4. Supprimer un duel
 
-    // récupération du choix
-    rl.question("Votre choix : ", function (numeroChoix) {
+    0. Quitter
+    `)
+}
 
-        // une fois la saisie effectuée
+function proposerChoix(rl) {
+    afficherMenu()
+    rl.question('Votre choix :\n', numeroChoix => {
 
-        if (numeroChoix == 1) {
-            service.lister(function (listeDuels) {
-                listeDuels.forEach(function (element) {
-                    lg(element.id + ' : ' + element.stagiaireA.nom + ' vs. ' + element.stagiaireB.nom + ' dans ' + element.quizz.titre)
-                })
-            });
+        switch (numeroChoix) {
+            // Lister les duels
+            case '1':
+                lister()
+                proposerChoix(rl)
+                break
+
+            // Créer un duel
+            case '2':
+                creer()
+                proposerChoix(rl)
+                break
+
+            // Editer un duel
+            case '3':
+                editer()
+                proposerChoix(rl)
+                break
+
+            // Supprimer un duel
+            case '4':
+                supprimer()
+                proposerChoix(rl)
+                break
+
+            // Quitter
+            case '0':
+                rl.close()
+                break
+
+            // default
+            default:
+                lg(`Cette option n'exixte pas !`)
+                proposerChoix(rl)
+                break
         }
+    })
+}
 
-        // permet d'arrêter l'application
-        // à n'invoquer que si l'on ne servira plus de la saisie utilisateur
-        rl.close();
-    });
-};
+function lister() {
+    service.lister().then(body => {
+        body.forEach(element => {
+            lg(`${element.id} : ${element.stagiaireA.nom} vs. ${element.stagiaireB.nom} dans ${element.quizz.titre}`)
+        })
+    }, error => {
+        lg(`Erreur : ${error}`)
+    })
+}
 
+function creer() {
+
+}
+
+function editer() {
+
+}
+
+function supprimer() {
+
+}
 module.exports = {
     titre: TITRE,
     demarrer: demarrer
