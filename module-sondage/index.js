@@ -1,34 +1,38 @@
-var service = require('../module-sondage/service')
-var lg = console.log;
+const SondageService = require('../module-sondage/service')
 
-var TITRE = 'Sondage';
+const sondageService = new SondageService();
 
-var demarrer = function (rl, sortir) {
+const lg = console.log;
+
+const TITRE = 'Sondage';
+
+const demarrer = function (rl, sortir) {
     lg('*** ' + TITRE + ' ***');
     lg("1. lister");
     lg("2. lister par ID");
 
-    rl.question("votre choix:", function (numeroChoix) {
+    rl.question("votre choix: ", numeroChoix => {
         if (numeroChoix == 1) {
-            service.lister(function (sondages) {
-                sondages.forEach( element =>
-                    lg("Titre :", element.titre, " | Classe :", element.classe.nom, " | Nombre d'option :", element.nb_options)
-                );
-            });
-            rl.close();
-        } else if (numeroChoix == 2) {
-            rl.question("selectionner un ID :", function(id){
-                service.listerById(id, function(sondage) {
-                    lg("Titre :",sondage.titre, "| Classe :", sondage.classe.nom);
-                    lg("Options :");
-                    sondage.options.forEach( opt => 
-                        lg("- Titre :", opt.libelle, "| description :", opt.description)
-                    );
+            sondageService.lister().then(liste => {
+                liste.forEach(sondage => {
+                    lg(`Titre : ${sondage.titre} | Classe : ${sondage.classe.nom} | Nombre d'option : ${sondage.nb_options}`)
                 });
-                rl.close();
-            });
+            })
+                .then(rl.close())
+                .catch(error => lg(error))
+        } else if (numeroChoix == 2) {
+            rl.question("Selectionner un id :", id => sondageService.listerById(id)
+                .then(sondage => {
+                    lg(`Titre : ${sondage.titre} | Classe : ${sondage.classe.nom}`);
+                    sondage.options.forEach(opt =>
+                        lg(`- Titre : ${opt.libelle} | description : ${opt.description}`)
+                    )
+                })
+                .then(rl.close())
+                .catch(error => lg(error))
+            )
         }
-    });
+    })
 };
 
 module.exports = {
