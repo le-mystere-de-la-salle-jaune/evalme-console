@@ -2,71 +2,90 @@
 // recherche par défaut dans le répertoire node_modules
 const request = require('request')
 
-exports.lister = callback => {
+class Service{
+  constructor() {
 
-    request('https://examen-web-admin.herokuapp.com/api/examens', { json: true }, (err, res, body) => {
-        if (err) { 
-            return console.log('Erreur', err); 
+  }
+
+  lister (){
+
+    return new Promise((resolve, reject) => {
+      request('https://examen-web-admin.herokuapp.com/api/examens', { json: true }, (err, res, body) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(body)
         }
-
-        // body contient les données récupérées
-        //uneListe = body
-        //console.log(body)
-
-        // transmission de la réponse grâce à la technique du callback
-        callback(body);
-    });
-};
-
-exports.creer = (newJson, callback) => {
-
-    request(
-        { method: 'POST'
-        , uri: 'https://examen-web-admin.herokuapp.com/api/examens'
-        , body: newJson
-        ,json: true
+      })
+    })
+  };
+  
+  creer(newJson){
+    return new Promise((resolve, reject) => {
+      request(
+        {
+          method: 'POST'
+          , uri: 'https://examen-web-admin.herokuapp.com/api/examens'
+          , body: newJson
+          , json: true
         }
-      , (error, response, body) => {
-          if(response.statusCode == 200){
-            callback(200,"New examen corectly inserted")
+        , (error, response, body) => {
+          let responseArray = [response, body, error]
+          if (response.statusCode == 201) {
+            resolve("New exam correctly inserted.")
           } else {
-            callback(response.statusCode, body)
+            reject(responseArray)
           }
         }
       )
-};
-
-exports.update = (newJson, callback) => {
-
-    request(
-        { method: 'PUT'
-        , uri: 'https://examen-web-admin.herokuapp.com/api/examens/'+newJson.id
-        , body: newJson
-        ,json: true
+    })
+  };
+  
+  update(newJson) {
+  
+    return new Promise((resolve, reject) => {
+      request(
+        {
+          method: 'PUT'
+          , uri: 'https://examen-web-admin.herokuapp.com/api/examens/' + newJson.id
+          , body: newJson
+          , json: true
         }
-      , (error, response, body) => {
-          if(response.statusCode == 200){
-            callback(200,"New examen corectly inserted")
+        , (error, response, body) => {
+          let responseArray = [response, body, error]
+          if (response.statusCode == 200) {
+            resolve("Exam correctly updated.")
           } else {
-            callback(response.statusCode, body)
+            reject(responseArray)
           }
         }
       )
-};
-
-exports.supprimer = (idExamen, callback) => {
-
-    request(
-        { method: 'DELETE'
-        , uri: 'https://examen-web-admin.herokuapp.com/api/examens/'+idExamen
-        ,json: true
+    })
+  }
+  
+  supprimer(idExamen, callback) {
+  
+    return new Promise((resolve, reject) => {
+      request(
+        {
+          method: 'DELETE'
+          , uri: 'https://examen-web-admin.herokuapp.com/api/examens/' + idExamen
+          , json: true
         }
-      , (error, response, body) => {
-          if(response.statusCode == 200){
-            callback(200,"Examen corectly deleted")
+        , (error, response, body) => {
+          let responseArray = [response, body, error]
+          if (response.statusCode == 200) {
+            resolve("Examen corectly deleted.")
           } else {
-            callback(response.statusCode, body)
+            reject(responseArray)
           }
         }
       )
-};
+    })
+  };
+  
+}
+
+module.exports = Service
+
+

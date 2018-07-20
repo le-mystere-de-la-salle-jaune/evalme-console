@@ -1,9 +1,11 @@
 const lg = console.log;
 
-const service = require('../module-examen/service')
+const Service = require('../module-examen/service')
+
+serviceObj = new Service()
 
 const optionsTab = [lister, creer, update, supprimer]
-const saveOrUpdate = [service.creer, service.update]
+const saveOrUpdate = [serviceObj.creer, serviceObj.update]
 
 // fonction démarrer exprimant la logique de votre entité
 const demarrer = rl => {
@@ -29,30 +31,19 @@ function proposerChoix(rl) {
     });
 }
 
-function proposerChoixRec(rl) {
-
-    afficherMenu()
-
-    // récupération du choix
-    rl.question("Votre choix : ", numeroChoix => {
-
-        if (numeroChoix > 0 && numeroChoix < 4) {
-            optionsTab[numeroChoix - 1](rl)
-            proposerChoixRec(rl)
-        }
-
-    });
-
-}
-
 function lister(rl) {
-    service.lister(uneListe =>{
-        uneListe.forEach(element => {
-            printExam(element)
-        });
 
+    lg("Request is sent, please wait ...")
+
+    serviceObj.lister().then(body =>{
+        body.forEach(element => {
+            printExam(element)
+        })
         proposerChoix(rl)
-    });
+    }, error => {
+        lg("Error :", error)
+        proposerChoix(rl)
+    })
 }
 
 function creer(rl) {
@@ -79,26 +70,26 @@ function update(rl) {
 
 function supprimer(rl) {
     lg("*** Suppression d'un éxamen ***")
-    service.lister(uneListe => {
-        uneListe.forEach(element => {
+    serviceObj.lister().then(body =>{
+        body.forEach(element => {
             printExam(element)
         })
 
-        rl.question("Id de l'éxamen à supprimer : ", numeroChoix => {
-            service.supprimer(numeroChoix, (code, message => {
-                if (code == 200) {
-                    lg(message)
-                } else {
-                    lg("Error :", code)
-                    lg(message)
-                }
+        return questionPromise(rl, "Id de l'éxamen à supprimer : ")
 
-                //loop back
-                proposerChoix(rl)
-            })
-        })
+    }).then(numeroSuppr => {
+        return serviceObj.supprimer(numeroSuppr)
+    }).then(okString => {
+        lg(okString)
+        return Promise.resolve();
+    }, errorArray =>{
+        lg("Error :", errorArray[0].statusCode)
+        lg(errorArray[2])
+        lg(errorArray[1])
+        return Promise.resolve();
+    }).then(() => {
+        proposerChoix(rl)
     })
-
 }
 
 function printExam(exam) {
@@ -139,20 +130,26 @@ function saveExamInfos(rl, service, newJson) {
                 newJson.classe_id = numeroChoix
 
                 lg("Transmiting request, please wait ...")
-                saveOrUpdate[service](newJson,  (code, message) => {
-                    if (code == 200) {
-                        lg(message)
-                    } else {
-                        lg("Error :", code)
-                        lg(message)
-                    }
-
-                    //loop back
+                saveOrUpdate[service](newJson).then(okString =>{
+                    lg(okString)
+                    proposerChoix(rl)
+                },errorArray =>{
+                    lg("Error :", errorArray[0].statusCode)
+                    lg(errorArray[2])
+                    lg(errorArray[1])
                     proposerChoix(rl)
                 })
             });
         });
     });
+}
+
+function questionPromise(rl, question){
+    return new Promise((resolve, reject) => {
+        rl.question(question, numeroChoix => {
+            resolve(numeroChoix)
+        })
+    })
 }
 
 // exposition d'informations exploitées par le module parent
