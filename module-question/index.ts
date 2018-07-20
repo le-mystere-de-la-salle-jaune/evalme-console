@@ -1,21 +1,21 @@
 var lg = console.log;
 var TITRE = 'QUESTION';
-var service = require('./service');
+import {lister} from './service';
 
-var demarrer = function(rl, sortir) {
+var demarrer = function(rl:any, sortir:any) {
     lg('*** ' + TITRE + ' ***');
 
     lg("1. Lister");
     lg("2. Sauvegarder");
 
     // récupération du choix
-    rl.question("Votre choix : ", function(numeroChoix) {
+    rl.question("Votre choix : ", function(numeroChoix:any) {
 
         // une fois la saisie effectuée
 
         if(numeroChoix == 1) {
             lg(">>>> Vous avez choisi Lister");
-            service.lister(function(liste){
+            lister(function(liste:any){
 
                 lg("liste recupere", liste);
 
@@ -23,10 +23,10 @@ var demarrer = function(rl, sortir) {
 
                 lg("liste[i].options[j].id : "+liste[0].options[0].id)
 
-                for(i in liste){
+                for(let i in liste){
                     lg("------------");
                     lg("QUESTION  "+liste[i].id+") " +liste[i].titre);
-                    for(j in liste[i].options){
+                    for(let j in liste[i].options){
                         lg("..... Reponse "+liste[i].options[j].id+") "+liste[i].options[j].libelle);
                     }
                 }
@@ -47,7 +47,7 @@ var demarrer = function(rl, sortir) {
     });
 };
 
-module.exports = {
+export let modulQuestion = {
     titre : TITRE,
     demarrer : demarrer
 }

@@ -1,7 +1,7 @@
-var readline = require('readline');
+import readline from 'readline';
 
 // Module démo à supprimer
-var modulQuestion = require('./module-question');
+import {modulQuestion} from './module-question';
 
 // pour faciliter l'écriture des logs et la répétition des "console.log"
 var lg = console.log;
@@ -23,14 +23,15 @@ var rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
+var sortir:any;
 
 // lecture de l'entrée de la console
 // la variable `numero` représente la saisie effectuée, ici un chiffre est attendu
-rl.question('Choisir une entité :', function(numero) {
+rl.question('Choisir une entité :', function(numero:any) {
 
     // invocation de la méthode `demarrer` du module choisi.
     // => chaque module doit exposer une méthode qui demarrer(rl)
-    listeModules[numero-1].demarrer(rl);
+    listeModules[numero-1].demarrer(rl,sortir);
 });
 
 

@@ -1,7 +1,7 @@
 var lg = console.log;
 
 // fonction démarrer exprimant la logique de votre entité
-var demarrer = function(rl) {
+var demarrer = function(rl:any) {
 
     // exemple d'affichage de menu
     lg("*** Entité Personne ***");
@@ -10,7 +10,7 @@ var demarrer = function(rl) {
 
 
     // récupération du choix
-    rl.question("Votre choix : ", function(numeroChoix) {
+    rl.question("Votre choix : ", function(numeroChoix:any) {
 
         // une fois la saisie effectuée
 
