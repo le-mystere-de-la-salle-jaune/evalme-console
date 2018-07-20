@@ -7,7 +7,7 @@ exports.lister = function (callback) {
     var request = require('request')
 
     // Envoie de la requête http
-    request('https://evalme-app.herokuapp.com/api/stagiaire', { json: true }, function (err, res, body) {
+    request('https://evalme-app.herokuapp.com/api/stagiaires', { json: true }, function (err, res, body) {
         if (err) { return console.log('Erreur', err); }
 
         // transmission de la réponse grâce à la technique du callback
@@ -22,7 +22,7 @@ exports.creer = function (newStagiaire, callback) {
     // Envoie de la requête http
     request.post({
         method: 'POST',
-        uri: 'http://localhost:8080/api/stagiaire',
+        uri: 'http://localhost:8080/api/stagiaires',
         json: true,
         body: newStagiaire,
     }, function (err, res, body) {
