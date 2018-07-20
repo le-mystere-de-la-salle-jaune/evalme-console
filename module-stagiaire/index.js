@@ -1,10 +1,10 @@
-var lg = console.log;
+const lg = console.log;
 
 
-var service = require('../module-stagiaire/service')
+const service = require('../module-stagiaire/service')
 
 // fonction démarrer exprimant la logique de votre entité
-var demarrer = function(rl) {
+const demarrer = function(rl) {
 
     // exemple d'affichage de menu
     lg("*** Stagiaire ***");
@@ -16,35 +16,42 @@ var demarrer = function(rl) {
 
 
     // récupération du choix
-    rl.question("Votre choix : ", function(numeroChoix) {
+    rl.question("Votre choix : ", numeroChoix => {
 
         // une fois la saisie effectuée
 
         if(numeroChoix == 1) {
             lg(">>>> Vous avez choisi Lister");
             // liste les stagiaires
-service.lister(function(uneListe) {
-    uneListe.forEach(function(element) {
-        console.log('Nom : ' + element.nom + ', Prenom : ' + element.prenom + ', Email : ' + element.email + ', Photo : ' + element.photo_url);
+
+service.lister().then(uneListe => {
+    console.log(typeof uneListe)
+    uneListe.forEach(element => {
+        console.log(`
+        Nom : ${element.nom}, 
+        Prenom : ${element.prenom},
+        Email : ${element.email}, 
+        Photo : ${element.photo_url}
+         `);
         rl.close();
     });
 });
         } else if (numeroChoix == 2) {
             lg(">>>> Vous avez choisi Créer");
             // création d'un stagiaire
-var newStagiaire = {};
+const newStagiaire = {};
 
-rl.question("Nom : ", function(newNom) {
+rl.question("Nom : ", newNom => {
     newStagiaire.nom = newNom;
-    rl.question("Prénom : ", function(newPrenom) {
+    rl.question("Prénom : ", newPrenom => {
         newStagiaire.prenom = newPrenom;
-        rl.question("Email : ", function(newEmail) {
+        rl.question("Email : ", newEmail => {
             newStagiaire.email = newEmail;
-            rl.question("Photo : ", function(newPhoto) {
+            rl.question("Photo : ", newPhoto => {
                 newStagiaire.photo_url = newEmail;
 
-                service.creer(newStagiaire, function(body) {
-                    console.log("Un nouveau stagiaire a été créé : " + newStagiaire.nom + " avec l'id " + body.stagiaire_id);
+                service.creer(newStagiaire, body => {
+                    console.log(`Un nouveau stagiaire a été créé : ${newStagiaire.nom}, avec l'id ${body.stagiaire_id}`);
         // permet d'arrêter l'application
         // à n'invoquer que si l'on ne servira plus de la saisie utilisateur
         rl.close();

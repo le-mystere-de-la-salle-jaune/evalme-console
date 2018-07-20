@@ -10,6 +10,12 @@
   "license": "MIT",
   "description": "Application Console BackOffice EvalMe",
   "dependencies": {
-    "request": "^2.87.0"
+    "@types/jsdom": "^11.0.6",
+    "@types/node": "^10.5.2",
+    "@types/request-promise-native": "^1.0.15",
+    "request": "^2.87.0",
+    "request-promise-native": "^1.0.5",
+    "ts-node": "^7.0.0",
+    "typescript": "^2.9.2"
   }
 }
