@@ -1,14 +1,14 @@
-var readline = require('readline');
+const readline = require('readline');
 
-// Module démo à supprimer
-var moduleDemo = require('./module-demo');
+// Import du module stagiaire
+const moduleStagiaire = require('./module-stagiaire');
 
 // pour faciliter l'écriture des logs et la répétition des "console.log"
-var lg = console.log;
+const lg = console.log;
 
 // liste des modules
 // si vous créer un nouveau module, n'oubliez pas de mettre à jour cette liste
-var listeModules = [moduleDemo];
+const listeModules = [moduleStagiaire];
 
 lg('**** EvalMe - Console Administration ****');
 
@@ -19,7 +19,7 @@ listeModules.forEach(function(module, index) {
 
 // création d'un objet permet de lire l'entrée de la console
 // l'équivalent du Scanner(System.in) Java SE
-var rl = readline.createInterface({
+const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
