@@ -5,8 +5,8 @@ var demarrer = function(rl) {
 
     // exemple d'affichage de menu
     lg("*** Entité Personne ***");
-    lg("1. Lister");
-    lg("2. Sauvegarder");
+    lg("1. Lister les classes");
+    lg("2. Créer une classe");
 
 
     // récupération du choix
@@ -15,9 +15,9 @@ var demarrer = function(rl) {
         // une fois la saisie effectuée
 
         if(numeroChoix == 1) {
-            lg(">>>> Vous avez choisi Lister");
+            lg(">>>> Vous avez choisi de lister les classes");
         } else if (numeroChoix == 2) {
-            lg(">>>> Vous avez choisi Sauvegarder");
+            lg(">>>> Vous avez choisi de créer une classe");
         }
 
         // permet d'arrêter l'application
